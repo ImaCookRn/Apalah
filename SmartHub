@@ -11,8 +11,8 @@ local function ShowSecondGUI()
     secondGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
     local secondFrame = Instance.new("Frame")
-    secondFrame.Size = UDim2.new(0, 200, 0, 150)
-    secondFrame.Position = UDim2.new(0.5, -100, 0.5, -75)
+    secondFrame.Size = UDim2.new(0, 400, 0, 300) -- Ubah ukuran GUI kedua menjadi 2x lebih besar
+    secondFrame.Position = UDim2.new(0.5, -200, 0.5, -150) -- Tengah-tengah layar
     secondFrame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
     secondFrame.BorderSizePixel = 0
     secondFrame.Parent = secondGui
@@ -83,14 +83,4 @@ local function ShowFirstGUI()
         if IsValidKey(enteredKey) then
             -- Jika kunci valid, tampilkan GUI kedua
             ShowSecondGUI()
-            -- Hapus GUI pertama setelah memunculkan GUI kedua
-            gui:Destroy()
-        else
-            -- Jika kunci tidak valid, beri peringatan
-            warn("Kunci tidak valid!")
-        end
-    end)
-end
-
--- Tampilkan GUI pertama saat skrip dijalankan
-ShowFirstGUI()
+            -- Hapus GUI pertama setelah mem
