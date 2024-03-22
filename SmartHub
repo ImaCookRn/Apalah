@@ -1,5 +1,5 @@
 -- Replace 'YOUR_VALID_KEY_HERE' with your actual valid key
-local validKey = "COKLAT"
+local validKey = "YOUR_VALID_KEY_HERE"
 
 -- Function to check if the entered key is valid
 local function IsValidKey(enteredKey)
