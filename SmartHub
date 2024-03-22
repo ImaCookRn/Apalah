@@ -1,66 +1,50 @@
--- Replace 'YOUR_VALID_KEY_HERE' with your actual valid key
-local validKey = "YOUR_VALID_KEY_HERE"
+-- Buat ScreenGui
+local gui = Instance.new("ScreenGui")
+gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Function to check if the entered key is valid
-local function IsValidKey(enteredKey)
-    return enteredKey == validKey
-end
+-- Buat Frame untuk GUI utama
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 200, 0, 150)
+frame.Position = UDim2.new(0.5, -100, 0.5, -75)
+frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+frame.BorderSizePixel = 0
+frame.Parent = gui
 
--- Function to prompt the user to enter the key
-local function PromptForKey()
-    local enteredKey = game:GetService("GuiService"):PromptTextInput("Enter Key", "Enter the key to access the GUI:")
-    if enteredKey ~= "" and IsValidKey(enteredKey) then
-        return true
-    else
-        game.Players.LocalPlayer:Kick("Invalid key or key not entered.")
-        return false
-    end
-end
+-- Buat judul
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.Text = "GUI Saya"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.BackgroundTransparency = 1
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 20
+title.Parent = frame
 
--- Check if the user entered the valid key before creating the GUI
-if PromptForKey() then
-    -- Create a ScreenGui instance
-    local gui = Instance.new("ScreenGui")
-    gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Buat tombol tutup
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -30, 0, 0)
+closeButton.Text = "X"
+closeButton.BackgroundColor3 = Color3.new(0.8, 0, 0)
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.Font = Enum.Font.SourceSansBold
+closeButton.TextSize = 18
+closeButton.Parent = title
 
-    -- Create a Frame instead of a TextButton for draggable functionality
-    local frame = Instance.new("Frame")
-    frame.Parent = gui
-    frame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    frame.Size = UDim2.new(0, 200, 0, 50)
-    frame.BackgroundTransparency = 1 -- Make it invisible
-    frame.Active = true
-    frame.Draggable = true -- Allow dragging
+-- Fungsi untuk menutup GUI saat tombol tutup ditekan
+closeButton.MouseButton1Click:Connect(function()
+    gui:Destroy()
+end)
 
-    -- Create a TextLabel for the title
-    local title = Instance.new("TextLabel")
-    title.Parent = frame
-    title.Size = UDim2.new(1, 0, 0, 20)
-    title.BackgroundTransparency = 1
-    title.Text = "Draggable GUI"
-    title.TextColor3 = Color3.new(1, 1, 1)
-    title.TextSize = 14
-
-    -- Create a TextButton for the close button
-    local closeButton = Instance.new("TextButton")
-    closeButton.Parent = frame
-    closeButton.Position = UDim2.new(1, -20, 0, 0)
-    closeButton.Size = UDim2.new(0, 20, 0, 20)
-    closeButton.Text = "X"
-    closeButton.BackgroundColor3 = Color3.new(1, 0, 0)
-    closeButton.TextColor3 = Color3.new(1, 1, 1)
-
-    -- Define a function to be called when the close button is clicked
-    local function OnCloseButtonClick()
-        gui:Destroy() -- Remove the GUI
-    end
-    closeButton.MouseButton1Click:Connect(OnCloseButtonClick)
-
-    -- Define a function to be called when the button is clicked
-    local function OnButtonClick()
-        print("Button clicked!")
-    end
-
-    -- Connect the button's MouseButton1Click event to the function
-    frame.MouseButton1Click:Connect(OnButtonClick)
-end
+-- Buat label teks
+local infoLabel = Instance.new("TextLabel")
+infoLabel.Size = UDim2.new(1, -20, 1, -60)
+infoLabel.Position = UDim2.new(0, 10, 0, 40)
+infoLabel.Text = "Ini adalah GUI sederhana untuk Roblox."
+infoLabel.TextColor3 = Color3.new(1, 1, 1)
+infoLabel.BackgroundTransparency = 1
+infoLabel.Font = Enum.Font.SourceSans
+infoLabel.TextSize = 16
+infoLabel.TextWrapped = true
+infoLabel.Parent = frame
