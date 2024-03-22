@@ -1,8 +1,25 @@
--- Fungsi untuk mengecek validitas kunci
-local function IsValidKey(enteredKey)
-    -- Ganti 'YOUR_VALID_KEY_HERE' dengan kunci yang benar
-    local validKey = "YOUR_VALID_KEY_HERE"
-    return enteredKey == validKey
+-- Fungsi untuk menampilkan GUI SmartHub
+local function ShowSmartHubButton(parentFrame)
+    local smartHubButton = Instance.new("TextButton")
+    smartHubButton.Size = UDim2.new(0, 100, 0, 30)
+    smartHubButton.Position = UDim2.new(0.5, -50, 0.9, -30)
+    smartHubButton.Text = "SmartHub"
+    smartHubButton.BackgroundColor3 = Color3.new(0, 0.5, 0)
+    smartHubButton.TextColor3 = Color3.new(1, 1, 1)
+    smartHubButton.Font = Enum.Font.SourceSansBold
+    smartHubButton.TextSize = 16
+    smartHubButton.Parent = parentFrame
+
+    -- Event untuk memunculkan atau menghilangkan GUI kedua
+    smartHubButton.MouseButton1Click:Connect(function()
+        if gui then
+            if gui.Parent then
+                gui:Destroy()
+            else
+                ShowFirstGUI()
+            end
+        end
+    end)
 end
 
 -- Fungsi untuk menampilkan GUI kedua
@@ -11,8 +28,8 @@ local function ShowSecondGUI()
     secondGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
     local secondFrame = Instance.new("Frame")
-    secondFrame.Size = UDim2.new(0, 200, 0, 150)
-    secondFrame.Position = UDim2.new(0.5, -100, 0.5, -75)
+    secondFrame.Size = UDim2.new(0, 400, 0, 300) -- Ukuran 2x lebih besar
+    secondFrame.Position = UDim2.new(0.5, -200, 0.5, -150) -- Posisi tengah
     secondFrame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
     secondFrame.BorderSizePixel = 0
     secondFrame.Parent = secondGui
@@ -37,69 +54,10 @@ local function ShowSecondGUI()
     infoLabel.TextSize = 16
     infoLabel.TextWrapped = true
     infoLabel.Parent = secondFrame
+    
+    -- Memanggil fungsi untuk menampilkan tombol SmartHub
+    ShowSmartHubButton(secondFrame)
 end
 
--- Fungsi untuk menampilkan GUI pertama
-local function ShowFirstGUI()
-    local gui = Instance.new("ScreenGui")
-    gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 200, 0, 150)
-    frame.Position = UDim2.new(0.5, -100, 0.5, -75)
-    frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-    frame.BorderSizePixel = 0
-    frame.Parent = gui
-
-    local title = Instance.new("TextLabel")
-    title.Size = UDim2.new(1, 0, 0, 30)
-    title.Position = UDim2.new(0, 0, 0, 0)
-    title.Text = "GUI Pertama (Kunci Dibutuhkan)"
-    title.TextColor3 = Color3.new(1, 1, 1)
-    title.BackgroundTransparency = 1
-    title.Font = Enum.Font.SourceSansBold
-    title.TextSize = 18
-    title.Parent = frame
-
-    local keyTextBox = Instance.new("TextBox")
-    keyTextBox.Size = UDim2.new(0, 180, 0, 30)
-    keyTextBox.Position = UDim2.new(0.5, -90, 0.5, -15)
-    keyTextBox.PlaceholderText = "Masukkan Kunci..."
-    keyTextBox.Parent = frame
-
-    local submitButton = Instance.new("TextButton")
-    submitButton.Size = UDim2.new(0, 100, 0, 30)
-    submitButton.Position = UDim2.new(0.5, -50, 0.5, 20)
-    submitButton.Text = "Submit"
-    submitButton.BackgroundColor3 = Color3.new(0, 0.5, 1)
-    submitButton.TextColor3 = Color3.new(1, 1, 1)
-    submitButton.Font = Enum.Font.SourceSansBold
-    submitButton.TextSize = 16
-    submitButton.Parent = frame
-
-    -- Event untuk memproses pengecekan kunci saat tombol submit ditekan
-    submitButton.MouseButton1Click:Connect(function()
-        local enteredKey = keyTextBox.Text
-        if IsValidKey(enteredKey) then
-            -- Jika kunci valid, tampilkan GUI kedua
-            ShowSecondGUI()
-            -- Hapus GUI pertama setelah memunculkan GUI kedua
-            gui:Destroy()
-        else
-            -- Jika kunci tidak valid, beri peringatan
-            warn("Kunci tidak valid!")
-        end
-    end)
-
-    -- Fungsi untuk menjadikan GUI draggable
-    local isDragging = false
-    local offset = Vector2.new(0, 0)
-
-    frame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            isDragging = true
-            offset = input.Position - frame.Position
-        end
-    end)
-
-    frame.Input
+-- Tampilkan GUI kedua saat skrip dijalankan
+ShowSecondGUI()
