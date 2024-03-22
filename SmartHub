@@ -1,18 +1,66 @@
--- Create a ScreenGui instance
-local gui = Instance.new("ScreenGui")
-gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Replace 'YOUR_VALID_KEY_HERE' with your actual valid key
+local validKey = "COKLAT"
 
--- Create a TextButton instance
-local button = Instance.new("TextButton")
-button.Parent = gui
-button.Position = UDim2.new(0.5, 0, 0.5, 0)
-button.Size = UDim2.new(0, 200, 0, 50)
-button.Text = "Click me!"
-
--- Define a function to be called when the button is clicked
-local function OnButtonClick()
-    print("Button clicked!")
+-- Function to check if the entered key is valid
+local function IsValidKey(enteredKey)
+    return enteredKey == validKey
 end
 
--- Connect the button's MouseButton1Click event to the function
-button.MouseButton1Click:Connect(OnButtonClick)
+-- Function to prompt the user to enter the key
+local function PromptForKey()
+    local enteredKey = game:GetService("GuiService"):PromptTextInput("Enter Key", "Enter the key to access the GUI:")
+    if enteredKey ~= "" and IsValidKey(enteredKey) then
+        return true
+    else
+        game.Players.LocalPlayer:Kick("Invalid key or key not entered.")
+        return false
+    end
+end
+
+-- Check if the user entered the valid key before creating the GUI
+if PromptForKey() then
+    -- Create a ScreenGui instance
+    local gui = Instance.new("ScreenGui")
+    gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    -- Create a Frame instead of a TextButton for draggable functionality
+    local frame = Instance.new("Frame")
+    frame.Parent = gui
+    frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    frame.Size = UDim2.new(0, 200, 0, 50)
+    frame.BackgroundTransparency = 1 -- Make it invisible
+    frame.Active = true
+    frame.Draggable = true -- Allow dragging
+
+    -- Create a TextLabel for the title
+    local title = Instance.new("TextLabel")
+    title.Parent = frame
+    title.Size = UDim2.new(1, 0, 0, 20)
+    title.BackgroundTransparency = 1
+    title.Text = "Draggable GUI"
+    title.TextColor3 = Color3.new(1, 1, 1)
+    title.TextSize = 14
+
+    -- Create a TextButton for the close button
+    local closeButton = Instance.new("TextButton")
+    closeButton.Parent = frame
+    closeButton.Position = UDim2.new(1, -20, 0, 0)
+    closeButton.Size = UDim2.new(0, 20, 0, 20)
+    closeButton.Text = "X"
+    closeButton.BackgroundColor3 = Color3.new(1, 0, 0)
+    closeButton.TextColor3 = Color3.new(1, 1, 1)
+
+    -- Define a function to be called when the close button is clicked
+    local function OnCloseButtonClick()
+        gui:Destroy() -- Remove the GUI
+    end
+    closeButton.MouseButton1Click:Connect(OnCloseButtonClick)
+
+    -- Define a function to be called when the button is clicked
+    local function OnButtonClick()
+        print("Button clicked!")
+    end
+
+    -- Connect the button's MouseButton1Click event to the function
+    frame.MouseButton1Click:Connect(OnButtonClick)
+end
