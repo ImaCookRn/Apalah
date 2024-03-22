@@ -1,0 +1,22 @@
+-- Fungsi untuk mendeteksi spawn buah dan menampilkan notifikasi
+local function FruitSpawnDetected(fruitModel)
+    -- Ambil posisi buah
+    local fruitPosition = fruitModel:GetModelCFrame().p
+    -- Ambil karakter pemain (ganti dengan cara yang sesuai dalam permainan)
+    local playerCharacter = game.Players.LocalPlayer.Character
+    if playerCharacter then
+        -- Ambil posisi karakter pemain
+        local playerPosition = playerCharacter.HumanoidRootPart.Position
+        -- Hitung jarak antara karakter pemain dan buah
+        local distance = (fruitPosition - playerPosition).magnitude
+        -- Tampilkan notifikasi di konsol
+        print("Fruit distance:", distance, "m")
+    end
+end
+
+-- Mendengarkan peristiwa spawn buah
+game:GetService("Workspace").ChildAdded:Connect(function(child)
+    if child:IsA("Model") and child.Name:find("Fruit") then
+        FruitSpawnDetected(child) -- Memanggil fungsi ketika buah muncul
+    end
+end)
