@@ -1,0 +1,27 @@
+-- Fungsi untuk mendeteksi spawn buah
+local function FruitSpawnDetected(fruitModel)
+    -- Ambil posisi buah
+    local fruitPosition = fruitModel:GetModelCFrame().p
+    -- Ambil karakter pemain (ganti dengan cara yang sesuai dalam permainan)
+    local playerCharacter = game.Players.LocalPlayer.Character
+    if playerCharacter then
+        -- Animasikan pemain untuk bergerak ke posisi buah dengan tween
+        local humanoidRootPart = playerCharacter:WaitForChild("HumanoidRootPart")
+        local tweenInfo = TweenInfo.new(
+            1, -- Durasi tween (dalam detik)
+            Enum.EasingStyle.Linear, -- Gaya animasi
+            Enum.EasingDirection.InOut -- Arah animasi
+        )
+        local goal = {}
+        goal.Position = fruitPosition
+        local tween = game:GetService("TweenService"):Create(humanoidRootPart, tweenInfo, goal)
+        tween:Play()
+    end
+end
+
+-- Mendengarkan peristiwa spawn buah
+game:GetService("Workspace").ChildAdded:Connect(function(child)
+    if child:IsA("Model") and child.Name:find("Fruit") then
+        FruitSpawnDetected(child) -- Memanggil fungsi ketika buah muncul
+    end
+end)
