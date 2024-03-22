@@ -22,6 +22,32 @@ local function ShowSmartHubButton(parentFrame)
     end)
 end
 
+-- Fungsi untuk menampilkan GUI ketiga kecil
+local function ShowCloseButton()
+    local closeGui = Instance.new("ScreenGui")
+    closeGui.Name = "CloseGui"
+    closeGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    local closeButton = Instance.new("TextButton")
+    closeButton.Size = UDim2.new(0, 30, 0, 30)
+    closeButton.Position = UDim2.new(1, -30, 0, 0)
+    closeButton.Text = "X"
+    closeButton.BackgroundColor3 = Color3.new(1, 0, 0)
+    closeButton.TextColor3 = Color3.new(1, 1, 1)
+    closeButton.Font = Enum.Font.SourceSansBold
+    closeButton.TextSize = 20
+    closeButton.Parent = closeGui
+
+    -- Event untuk menutup GUI kedua
+    closeButton.MouseButton1Click:Connect(function()
+        if gui then
+            if gui.Parent then
+                gui:Destroy()
+            end
+        end
+    end)
+end
+
 -- Fungsi untuk menampilkan GUI kedua
 local function ShowSecondGUI()
     local secondGui = Instance.new("ScreenGui")
@@ -59,5 +85,58 @@ local function ShowSecondGUI()
     ShowSmartHubButton(secondFrame)
 end
 
--- Tampilkan GUI kedua saat skrip dijalankan
-ShowSecondGUI()
+-- Fungsi untuk menampilkan GUI pertama
+local function ShowFirstGUI()
+    local gui = Instance.new("ScreenGui")
+    gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 200, 0, 150)
+    frame.Position = UDim2.new(0.5, -100, 0.5, -75)
+    frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+    frame.BorderSizePixel = 0
+    frame.Parent = gui
+
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, 0, 0, 30)
+    title.Position = UDim2.new(0, 0, 0, 0)
+    title.Text = "GUI Pertama (Kunci Dibutuhkan)"
+    title.TextColor3 = Color3.new(1, 1, 1)
+    title.BackgroundTransparency = 1
+    title.Font = Enum.Font.SourceSansBold
+    title.TextSize = 18
+    title.Parent = frame
+
+    local keyTextBox = Instance.new("TextBox")
+    keyTextBox.Size = UDim2.new(0, 180, 0, 30)
+    keyTextBox.Position = UDim2.new(0.5, -90, 0.5, -15)
+    keyTextBox.PlaceholderText = "Masukkan Kunci..."
+    keyTextBox.Parent = frame
+
+    local submitButton = Instance.new("TextButton")
+    submitButton.Size = UDim2.new(0, 100, 0, 30)
+    submitButton.Position = UDim2.new(0.5, -50, 0.5, 20)
+    submitButton.Text = "Submit"
+    submitButton.BackgroundColor3 = Color3.new(0, 0.5, 1)
+    submitButton.TextColor3 = Color3.new(1, 1, 1)
+    submitButton.Font = Enum.Font.SourceSansBold
+    submitButton.TextSize = 16
+    submitButton.Parent = frame
+
+    -- Event untuk memproses pengecekan kunci saat tombol submit ditekan
+    submitButton.MouseButton1Click:Connect(function()
+        local enteredKey = keyTextBox.Text
+        if IsValidKey(enteredKey) then
+            -- Jika kunci valid, tampilkan GUI kedua
+            ShowSecondGUI()
+            -- Hapus GUI pertama setelah memunculkan GUI kedua
+            gui:Destroy()
+        else
+            -- Jika kunci tidak valid, beri peringatan
+            warn("Kunci tidak valid!")
+        end
+    end)
+end
+
+-- Tampilkan GUI pertama saat skrip dijalankan
+ShowFirstGUI()
